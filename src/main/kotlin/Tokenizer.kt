@@ -5,10 +5,10 @@ import kotlin.system.exitProcess
 
 class Tokenizer {
 
-    fun tokenize(stream: InputStream): List<Token> {
+    fun tokenize(stream: InputStream): List<Any> {
 
         var number = stream.bufferedReader().read()
-        val listOfTokens: MutableList<Token> = mutableListOf()
+        val listOfTokens: MutableList<Any> = mutableListOf()
         if (number == -1) {
             println("Invalid JSON, empty file.")
             exitProcess(1)
@@ -19,6 +19,15 @@ class Tokenizer {
             }
             if ((number.toChar()) == '}') {
                 listOfTokens.add(Token(TokenType.RIGHT_CURLY_BRACE, number.toString()))
+            }
+            if ((number.toChar()) == '[') {
+                listOfTokens.add(Token(TokenType.LEFT_SQUARE_BRACKET, number.toString()))
+            }
+            if ((number.toChar()) == ']') {
+                listOfTokens.add(Token(TokenType.RIGHT_SQUARE_BRACKET, number.toString()))
+            }
+            if ((number.toChar()) == ':') {
+                listOfTokens.add(Token(TokenType.COLON, number.toString()))
             }
             number = stream.bufferedReader().read()
         }
