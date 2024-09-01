@@ -29,6 +29,26 @@ class Tokenizer {
             if ((number.toChar()) == ':') {
                 listOfTokens.add(Token(TokenType.COLON, number.toString()))
             }
+            if ((number.toChar()).isDigit()) {
+                var charArray = mutableListOf<Char>()
+                charArray.add(number.toChar())
+                stream.bufferedReader().mark(1)
+                number = stream.bufferedReader().read()
+                while (number.toChar().isDigit() || number.toChar() == '.') {
+                    charArray.add(number.toChar())
+                    stream.bufferedReader().mark(1)
+                    number = stream.bufferedReader().read()
+                }
+                if (charArray.isNotEmpty()) {
+                    val numberString = charArray.joinToString("")
+                    val numberToAdd = if (numberString.contains('.')) {
+                        numberString.toFloat() // Parse as Float
+                    } else {
+                        numberString.toInt() // Parse as Int
+                    }
+                    listOfTokens.add(Token(TokenType.NUMBER, numberToAdd))
+                }
+            }
             number = stream.bufferedReader().read()
         }
         return listOfTokens
